@@ -42,7 +42,7 @@ files:
 
 The user requested one high-level specification tracking all known items from the current repository assessment. This draft is a coordination and status record, not blanket approval to repair, install, run services, change policy, accept risk, or release. Detailed findings remain authoritative in `specs/reviews/functional-findings.md`, `specs/reviews/security-findings.md`, `specs/quality/eslint-ratchet-review.md`, and the linked quick notes.
 
-Baseline: branch `main` with local assessment and repair work based on original revision `325f5e52f9c8e50b24b576777b73ad31da3fc414`. The checkpoint is being prepared for the confirmed public fork `Wilder-Damon/interview-built-by-a-clanker`; integration is not claimed until the push is verified.
+Baseline: branch `main` with assessment and repair work based on original revision `325f5e52f9c8e50b24b576777b73ad31da3fc414`. The checkpoint was pushed to the confirmed public fork `Wilder-Damon/interview-built-by-a-clanker`, and the remote `main` commit was verified to match the local commit. This records Git integration only; it does not change any verification, security, or release-readiness status below.
 
 ## Status vocabulary
 
