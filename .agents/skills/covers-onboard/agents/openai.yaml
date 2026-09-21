@@ -1,0 +1,8 @@
+interface:
+  display_name: "COVERS Onboard"
+  short_description: "Safely onboard any repository into COVERS"
+  brand_color: "#19C7A3"
+  default_prompt: "Use $covers-onboard to inspect and onboard the current repository into COVERS."
+
+policy:
+  allow_implicit_invocation: true

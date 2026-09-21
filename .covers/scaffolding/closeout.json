@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "spec": "SPEC-YOUR-ID",
+  "revision": "commit-plus-working-tree-identity",
+  "scope": "Bounded work actually reviewed",
+  "context": {
+    "environment": "Replace with actual operating system/container identity",
+    "runtime_and_tools": "Replace with actual versions and configurations"
+  },
+  "checks": [
+    {
+      "id": "required-check",
+      "outcome": "not-run",
+      "evidence": ["specs/results/replace-with-real-evidence.json"]
+    }
+  ],
+  "limitations": ["Replace this template; missing evidence fails receipt generation."],
+  "residual_risks": ["Pending review"]
+}

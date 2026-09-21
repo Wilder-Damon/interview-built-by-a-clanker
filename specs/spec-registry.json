@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "specs": [
+    {
+      "id": "SPEC-ONBOARD-001",
+      "description": "Onboard the Agentic Personas Storefront to COVERS for a bounded live technical assessment.",
+      "status": "in_progress",
+      "domain": "onboarding",
+      "sdd_mode": "spec-led",
+      "parent": null,
+      "depends_on": [],
+      "amends": [],
+      "requirements": [
+        {
+          "id": "BR1",
+          "source": "conversation:2026-09-21",
+          "summary": "Preserve repository evidence and adopt nonconflicting COVERS scaffolding before any repairs."
+        },
+        {
+          "id": "BR2",
+          "source": "conversation:2026-09-21",
+          "summary": "Produce a source-backed architecture, separate functional and security findings, setup receipts, and a unit-first characterization proposal."
+        },
+        {
+          "id": "BR3",
+          "source": "conversation:2026-09-21",
+          "summary": "Install locked dependencies safely but do not execute project checks or repair behavior without further approval."
+        }
+      ],
+      "invariants": [],
+      "key_decisions": [
+        {
+          "id": "D1",
+          "decision": "Use the Full COVERS workflow for onboarding while keeping the first executable baseline unit-first.",
+          "rationale": "The assessment crosses frontend, API, shared contracts, authentication, authorization, and several candidate defects; formal traceability is proportionate while runtime scope remains bounded.",
+          "alternatives": [
+            "Use a Lite quick note"
+          ],
+          "consequences": [
+            "Maintain a formal active spec and registry",
+            "install the isolated pinned parser",
+            "keep repairs separately authorized"
+          ]
+        },
+        {
+          "id": "D2",
+          "decision": "Retain and coexist with the existing .lore specification records.",
+          "rationale": "The .lore records concern eci.yml and contain history that COVERS must not overwrite or silently migrate.",
+          "alternatives": [
+            "Bridge or migrate the legacy records"
+          ],
+          "consequences": [
+            ".lore remains authoritative for its historical scope; COVERS governs this onboarding and future explicitly covered work"
+          ]
+        },
+        {
+          "id": "D3",
+          "decision": "Treat the repository as an exercise and use a local trusted-project boundary for static onboarding and dependency installation only.",
+          "rationale": "The repository describes a debugging assessment, no application execution is authorized, and install scripts will be disabled.",
+          "alternatives": [
+            "Containerized execution",
+            "stronger disposable isolation"
+          ],
+          "consequences": [
+            "No services",
+            "backends",
+            "browser runs",
+            "or project checks during onboarding; revisit isolation before executing unfamiliar runtime paths"
+          ]
+        }
+      ],
+      "acceptance": [
+        {
+          "id": "R1",
+          "description": "Project-local COVERS 0.6.7 assets are adopted without overwriting pre-existing project content, with provenance and interventions recorded."
+        },
+        {
+          "id": "R2",
+          "description": "A concise source-backed overview and discovered current architecture describe components, flows, persistence, trust boundaries, integrations, generated code, and explicit unknowns."
+        },
+        {
+          "id": "R3",
+          "description": "Functional findings and security findings are separate and record evidence state independently from disposition."
+        },
+        {
+          "id": "R4",
+          "description": "Root AGENTS.md preserves existing governance and records COVERS scope, execution boundaries, legacy-spec disposition, and configured versus verified commands."
+        },
+        {
+          "id": "R5",
+          "description": "Dependency preparation records runtime and package-manager identities, source/install-script review, exact commands, outcomes, and skipped lifecycle scripts without modifying manifests or lockfiles."
+        },
+        {
+          "id": "R6",
+          "description": "The handoff proposes one bounded unit-first verification batch and clearly marks build, test, typecheck, lint, coverage, application, service, external advisory, CI, and release evidence as executed, deferred, failed, or unverified."
+        }
+      ],
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "action": "add",
+          "state": "changed"
+        },
+        {
+          "path": "specs/invariants.json",
+          "action": "add",
+          "state": "changed"
+        },
+        {
+          "path": "specs/reviews/covers-onboarding-overview.md",
+          "action": "add",
+          "state": "changed"
+        },
+        {
+          "path": "specs/reviews/current-architecture.md",
+          "action": "add",
+          "state": "changed"
+        },
+        {
+          "path": "specs/reviews/functional-findings.md",
+          "action": "add",
+          "state": "changed"
+        },
+        {
+          "path": "specs/reviews/security-findings.md",
+          "action": "add",
+          "state": "changed"
+        },
+        {
+          "path": "specs/reviews/setup-results.md",
+          "action": "add",
+          "state": "changed"
+        },
+        {
+          "path": "specs/reviews/first-baseline-proposal.md",
+          "action": "add",
+          "state": "changed"
+        },
+        {
+          "path": "specs/reviews/covers-onboarding-scorecard.md",
+          "action": "add",
+          "state": "changed"
+        }
+      ],
+      "path": "specs/1_active/SPEC-ONBOARD-001.md"
+    },
+    {
+      "id": "SPEC-REMEDIATION-001",
+      "description": "Track the Agentic Personas Storefront assessment findings, completed repairs, and remaining modernization work.",
+      "status": "draft",
+      "domain": "modernization",
+      "sdd_mode": "spec-led",
+      "parent": null,
+      "depends_on": [],
+      "amends": [],
+      "requirements": [
+        {
+          "id": "BR1",
+          "source": "conversation:2026-09-21",
+          "summary": "Maintain one high-level specification showing the status of all known assessment items."
+        }
+      ],
+      "invariants": [],
+      "key_decisions": [
+        {
+          "id": "D1",
+          "decision": "Keep detailed evidence and disposition in the existing findings, quick notes, and review receipts; use this master as the cross-domain status and sequencing index.",
+          "rationale": "A single overview is useful, but duplicating canonical evidence would create conflicting status records.",
+          "alternatives": [
+            "Move every detailed finding into this master"
+          ],
+          "consequences": [
+            "Every status entry links to its governing evidence",
+            "future slices reconcile this tracker at closeout"
+          ]
+        },
+        {
+          "id": "D2",
+          "decision": "Address remaining high-impact security policy before production-readiness work, while allowing independent bounded functional and quality slices to proceed under their own authority.",
+          "rationale": "Credential and token policy carry the highest residual exposure, but unrelated deterministic defects need not wait for one large security program.",
+          "alternatives": [
+            "One monolithic remediation project",
+            "functional work before security policy"
+          ],
+          "consequences": [
+            "Security policy work should normally use Full specs",
+            "small reversible fixes may use retained quick notes when explicitly selected"
+          ]
+        }
+      ],
+      "acceptance": [
+        {
+          "id": "R1",
+          "description": "Every currently recorded functional and security finding appears with evidence state, disposition, governing record, and next decision or verification step."
+        },
+        {
+          "id": "R2",
+          "description": "Quality, build, browser, coverage, CI, dependency, onboarding, and release-readiness gaps are tracked separately from functional and security findings."
+        },
+        {
+          "id": "R3",
+          "description": "Resolved items link to actual red-to-green or command evidence, while open, deferred, failed, and unverified items are never presented as passing."
+        },
+        {
+          "id": "R4",
+          "description": "Future remediation slices update their canonical register and reconcile this master without treating the master as execution authority."
+        }
+      ],
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "action": "modify",
+          "state": "changed"
+        }
+      ],
+      "path": "specs/1_active/SPEC-REMEDIATION-001.md"
+    }
+  ]
+}

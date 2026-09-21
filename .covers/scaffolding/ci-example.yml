@@ -1,0 +1,35 @@
+# Merge into an existing trusted workflow; do not overwrite project CI.
+# This example needs checkout history for merge-base and the adopted parser.
+# SPEC-TOOL-015/R5: review action revisions against your runner before enabling.
+name: COVERS metadata
+on: [pull_request]
+permissions:
+  contents: read
+jobs:
+  covers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - run: npm ci --ignore-scripts --prefix .covers
+      - run: node .covers/tooling/cli.mjs validate --target .
+      - name: Check active-spec change coverage
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.sha }}
+        # Commit and review {"specs":["SPEC-ID"]} at specs/change-selection.json.
+        # Use [] only for metadata-only closure. Never select all active specs automatically.
+        run: >-
+          node --input-type=module -e "import fs from 'node:fs'; import {drift} from './.covers/tooling/core.mjs'; const selection=JSON.parse(fs.readFileSync('specs/change-selection.json','utf8')); if(!Array.isArray(selection.specs)) throw new Error('Explicit spec selection required'); const r=drift(process.cwd(),process.env.BASE_REF,{specs:selection.specs,mode:'branch'}); console.log(JSON.stringify(r,null,2)); if(r.errors.length||r.unmapped.length) process.exitCode=1;"
+      # Add stack-specific acceptance tests and coverage thresholds as required
+      # jobs. Do not run guessed commands copied from another application's CI.
+      # Default drift policy requires ready/in_progress specs. Move them to
+      # complete in a follow-up evidence-only PR after the implementation merge.
+      # Do not disable the gate to combine closure with implementation.
+      # Deployment: separate trusted-trunk workflow, least-privilege credentials,
+      # approved environment/promotion, health verification and rollback.

@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "fast": [],
+    "full": []
+  },
+  "note": "Add reviewed direct command/args records. Plan first; --run is explicit and does not use a shell."
+}

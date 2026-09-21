@@ -15,7 +15,7 @@ function CartPage() {
   const navigate = useNavigate();
 
   const { data: cart, isLoading } = useQuery({
-    queryKey: ["cart"],
+    queryKey: ["cart", user?.id],
     queryFn: () => api.get<Cart>("/cart"),
     enabled: !!user,
   });

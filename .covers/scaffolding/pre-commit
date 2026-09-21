@@ -1,0 +1,10 @@
+#!/bin/sh
+# Optional: review and merge into your existing hook manager; never overwrite hooks.
+# Requires Node and the reviewed parser installed under .covers.
+# SPEC-TOOL-015/R3: metadata plus explicitly selected index state; no automatic staging.
+# Use Husky for compatible JS/TS projects or an existing/stack-appropriate
+# equivalent. COVERS provides checks, not mandatory hook-manager installation.
+set -eu
+node .covers/tooling/cli.mjs validate --target .
+: "${COVERS_SPECS:?Set COVERS_SPECS to explicitly reviewed comma-separated spec IDs}"
+node .covers/tooling/cli.mjs drift --target . --base HEAD --mode index --spec "$COVERS_SPECS"

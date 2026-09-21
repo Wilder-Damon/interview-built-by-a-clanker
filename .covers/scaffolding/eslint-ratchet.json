@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "targets": ["src/**/*.ts"],
+  "config": "eslint.config.mjs",
+  "lockfile": "package-lock.json",
+  "identityFiles": ["eslint.config.mjs", "package-lock.json", "tsconfig.json"]
+}

@@ -1,0 +1,16 @@
+{
+  "$comment": "SPEC-TOOL-032/R4: Deliberately incomplete until reviewed. Fill project-relative cwd/bin/launcher paths, actual manager name/version, and existing absolute native executables with fixed argument arrays. Probes must actually resolve the manager and query its version, emitting only JSON {path:absolute_resolved_launcher,version:observed_version}. The nested probe must run that lookup through the real representative task runner, including package-script shell behavior where applicable. Printing expected JSON is not evidence. Native runtime plus a reviewed probe script is supported; direct .cmd/.bat records are not. No interpolation or automatic acquisition is provided. Maximum 60 seconds per child: use the existing verify helper for full builds. Review descendant cleanup separately. This template never chooses paths, a manager or a version for you.",
+  "schema_version": 1,
+  "cwd": ".",
+  "shimDirectory": "",
+  "manager": {
+    "name": "",
+    "path": "",
+    "expectedVersion": ""
+  },
+  "parentProbe": {"executable": "", "args": []},
+  "nestedProbe": {"executable": "", "args": []},
+  "task": {"executable": "", "args": []},
+  "timeoutMs": 15000,
+  "maxBytes": 65536
+}

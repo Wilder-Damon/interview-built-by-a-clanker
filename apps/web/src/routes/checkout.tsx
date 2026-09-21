@@ -18,7 +18,7 @@ function CheckoutPage() {
   const [order, setOrder] = useState<Order | null>(null);
 
   const { data: cart, isLoading } = useQuery({
-    queryKey: ["cart"],
+    queryKey: ["cart", user?.id],
     queryFn: () => api.get<Cart>("/cart"),
     enabled: !!user,
   });

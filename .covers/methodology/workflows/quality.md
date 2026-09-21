@@ -1,0 +1,56 @@
+# Baseline code metrics and comparable improvement
+
+SPEC-TOOL-015/R2: preserved workflow guidance, extracted from the former full operating contract. Read the short COVERS.md contract first; higher-priority authority is unchanged. Paths in this reference are repository-root paths in the source distribution; prefix .covers/ after adoption unless already specified.
+
+## Baseline code metrics and comparable improvement
+
+SPEC-TOOL-019/R1-R4: the comprehensive baseline/hardening sequence below is the Full workflow. Lite may defer additional metrics and new strictness with an owner and promotion trigger, preserving a baseline revision where later comparison is planned. Existing enforced checks are never silently downgraded; missing measures stay unmeasured, not green. See workflows/lite.md.
+
+Make a code-metrics inventory and evidence checkpoint part of the baseline, before repair/refactor work. Re-measure relevant metrics at slice closeout and at final hardening so the team can see before, after and change—not merely a claim that the code is cleaner. This applies to any project/language; adapt to the components and available safe tooling. A standard checkpoint does not mandate a particular analyzer or automatic installation.
+
+Record cyclomatic complexity (control-flow path complexity) per function/method where meaningful; cognitive complexity where supported by the chosen analyzer; function/module size and owned source LOC; duplication; and dependency coupling/cycles where relevant. Keep measured code coverage and static diagnostic counts alongside, but as separate measures. Mark each metric measured, not collected, unavailable or not applicable with rationale. A failed scan is not zero complexity, no duplication or a passing result. If baseline collection is blocked, retain the original revision and record the missing evidence before affected work rather than fabricate a comparison.
+
+Retain raw reports with code revision and relevant local changes/snapshot, tool name/version/configuration, exact commands, execution environment, date, metric definitions/units, included file counts and exclusions. Reuse existing analyzers when suitable; inspect plugins/scripts before authorized execution and specify new tools under project setup scope. Follow the chosen environment/privacy boundary, never upload code to a metrics service or execute unfamiliar code just because baseline collection is recommended.
+
+Report totals and component/function distributions, not only averages: population count, median and p95 where meaningful, maximum and named hotspots with source references. Keep mixed-language results separate unless definitions truly match. Explain which hotspots affect the selected work. Complexity and size are signals for investigation, not automatic defects or proof of correctness; composite maintainability scores, if used, need their formula/tool definition and limitations.
+
+For before/after comparisons use the same analyzer version, configuration, definitions and owned-source scope. Show baseline, current and absolute delta, with additions/deletions/renames and denominator changes visible; percentages need their raw counts. Compare the matched source population separately from whole-project changes when needed. Generated/vendor exclusions must be justified and stable. If the tool or scope changes, remeasure the retained baseline within authorization or label the comparison non-comparable; never replace the historical report or claim improvement from changed exclusions.
+
+After baseline review, agree project-specific thresholds or no-regression budgets under a spec. Do not impose a universal complexity number across languages or refactor solely to game a metric by splitting functions, deleting tests or weakening contracts. Preserve existing meaningful gates, introduce new strict gates at the agreed hardening stage, and use characterization/regression tests plus stakeholder intent to protect behavior. Metric collection and hotspot identification alone do not authorize repairs or architecture changes.
+
+## Strict engineering hardening across languages
+
+Before promoting a metric, validate the analyzer against known-output examples representative of the language and framework. Reconcile physical-file versus embedded-language populations, nested/function identity semantics, parameter destructuring and graph boundaries. Equal counts alone do not establish semantic agreement. A stable but inaccurate measurement is not a reliable gate: preserve false positives, label limitations and resolve or explicitly bound them before enforcement.
+
+### Quality ratchet: observe, then enforce deliberately
+
+Use covers-quality and scaffolding/quality-review.md for an authorized assessment
+or gate increment. Verify actual task/file selection and raw exits before trusting
+a wrapper. Compare diagnostic identity and multiplicity, not just totals: one
+resolved violation must not hide a different new violation. Archive prior baselines
+before approved tightening. A check cannot silently update its own allowances.
+Challenge resolved-debt reintroduction, missing tools, empty scopes and incompatible
+configuration in disposable fixtures. Existing warnings need reviewed dispositions;
+their discovery does not authorize autofixing application behavior.
+
+An exacting focus on quality means more evidence and tighter feedback, not more arbitrary rules. AI assistance can make broader tests, repeated review and targeted improvements practical; neither generated code nor an AI critique earns trust without validation. Apply stages per rule, metric and component, not as a single project-wide switch:
+
+1. **Observe/report-only:** install/configure only authorized compatible tooling; collect reliable diagnostics without blocking on the new rule. Analyzer failures/missing reports are incomplete measurement, not green quality.
+2. **Review the baseline:** identify false positives and hotspots; retain reports and select owner, rule/version, thresholds, debt inventory, promotion trigger and exception policy. Static warnings are not business bug confirmations.
+3. **Prevent new violations:** enforce the reviewed ratchet on new/changed work. Unchanged legacy violations remain visible debt. Current comparable evidence must satisfy the adopted policy for cycles, dependencies, diagnostics and metric regressions. New observational rules may still report without blocking; existing enforced rules never silently become advisory.
+4. **Improve touched code:** apply reviewed limits to changed functions/modules and resolve relevant debt within the spec. Avoid unrelated mass rewrites; unavoidable narrow exceptions need rationale, owner, evidence and expiry/revisit trigger.
+5. **Enforce the agreed scope fully:** promote proven rules and tighten thresholds incrementally at hardening milestones. Rerun behavioral tests, compiler/type checks and builds. Promotion is recorded/versioned, not inferred from a passing run.
+
+New work must pass the currently enforced stage, existing required checks and the report-only evidence contract. Comparisons fail closed on missing/incompatible reports, changed analyzer definitions or unreviewed scope exclusions. No files measured is not green. Separate measurement errors, warnings, legacy debt and enforced violations. Do not refresh fingerprints, delete warnings, weaken rules or move code outside scope just to pass. Preserve baseline evidence; review resets/exceptions like code.
+
+Prefer a project-local non-mutating quality command with an explicit exit contract and synthetic pass/fail fixtures. CI repeats adopted gates when authorized; verify failure propagation and required-merge settings before claiming enforcement. Optional hooks and editor lint extensions provide early feedback, not a substitute for the command or CI. Reuse stack-native tooling; do not install global extensions, MCP services or remote platforms by default.
+
+Suggested review starting points—not universal standards—are cyclomatic complexity above 10, functions above 60 noncomment source lines, more than 5 parameters, or modules above 400 noncomment lines. Cognitive complexity above 15 is only a starting review trigger with a defined supported analyzer. Adapt to the language, generated/data-heavy constructs and context before enforcement. Track duplication with detector/token/line settings, prefer no new internal cycles, and review coupling hotspots rather than a blanket fan-in/out number. Coverage retains agreed supported-metric targets with honest scope. Avoid a composite score that conceals a failed required check.
+
+COVERS requires a deliberate strict-quality stage wherever the stack supports it: lint/static analysis, compiler diagnostics, static type checking and relevant framework rules. This is language-neutral, not a requirement to adopt TypeScript or one tool. For compiled/typed languages, assess compiler and analyzer strictness; for dynamic languages, use appropriate lint/static analysis and optional typing where beneficial; for mixed-language projects, assess each component. Record each check as applicable or not applicable with rationale. Do not claim a tool or type system offers guarantees it does not provide.
+
+Preserve existing meaningful checks throughout. First record the reproducible baseline, characterize valid behavior, repair agreed defects with regression protection, and reach the agreed behavioral/coverage targets. Then introduce additional strictness as final engineering hardening, in small spec-covered changes. An existing failing compiler/checker is an early repair, not a reason to postpone all checks until the end. Do not wait for a claim that every possible bug is gone. Urgent security/data-loss containment or a prerequisite check may move earlier with a documented scope and rationale; new checks must not rewrite baseline evidence.
+
+The hardening spec inventories effective rules/options across packages, chooses compatible pinned tools, and records rule rationale, owned scope, commands and acceptance. Favor meaningful correctness, unsafe-operation, nullability/type, async/resource-handling and framework rules where applicable, rather than maximizing rule count. Keep formatting-only churn separate from semantic fixes and review autofixes. After each bounded change rerun the relevant behavior tests plus compiler/build/static checks. A dynamic-language project need not undergo a whole-codebase typing migration merely to adopt COVERS.
+
+The final agreed project gate has zero unapproved violations or warnings and runs independently in CI when CI configuration is authorized. Explicit narrow exceptions need a reason, accountable owner, evidence and expiry/revisit date; distinguish third-party/generated-code boundaries from owned application code. Never obtain green output through broad ignores, source exclusions, weakened types, unsafe casts, unchecked escape hatches or suppressed diagnostics without a justified reviewed boundary. Compile-time checks do not replace runtime input validation, tests or security review. Optional hooks may repeat fast checks but never substitute for CI; a configured gate is not proof of remote merge enforcement. No tool, hook or protection is installed merely by adopting this guidance.

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "targets": [
+    "apps/api/src/**/*.ts",
+    "apps/web/src/components/**/*.tsx",
+    "apps/web/src/lib/**/*.ts",
+    "apps/web/src/lib/**/*.tsx",
+    "apps/web/src/routes/**/*.tsx",
+    "apps/web/src/main.tsx",
+    "packages/shared/src/**/*.ts"
+  ],
+  "config": "eslint.config.mjs",
+  "lockfile": "pnpm-lock.yaml",
+  "identityFiles": [
+    "eslint.config.mjs",
+    "package.json",
+    "pnpm-lock.yaml",
+    "tsconfig.base.json",
+    "apps/api/tsconfig.json",
+    "apps/web/tsconfig.json",
+    "packages/shared/tsconfig.json"
+  ]
+}
