@@ -60,10 +60,11 @@ Evidence (`observed`, `suspected`, `reproduced`) remains separate from dispositi
 |---|---|---|---|---|
 | TypeScript declaration failure | Reproduced | Resolved | `specs/quick/typecheck-fix.md` | Passing typecheck is limited to configured compiler tasks |
 | FUNC-002, FUNC-003, FUNC-005–FUNC-011 | Reproduced or observed per register | Resolved | `specs/quick/ui-bug-fixes.md`; `specs/reviews/functional-findings.md` | Browser-faithful UI/CORS verification deferred |
+| FUNC-012 favorite-heart cache contract | Reproduced | Resolved | `specs/quick/favorite-heart-cache-contract.md`; `specs/reviews/functional-findings.md` | Browser-faithful interaction remains deferred |
 | QUAL-001 ineffective lint wrapper | Reproduced | Resolved | `specs/quick/eslint-ratchet.md`; `specs/quality/eslint-ratchet-review.md` | Local ratchet only; CI enforcement absent |
 | SEC-001 authentication opt-in | Reproduced | Resolved | `specs/quick/auth-cart-ownership.md`; `apps/api/src/routes/authz-regressions.test.ts` | Expired-token and complete route matrix deferred |
 | SEC-004 cross-user cart deletion | Reproduced | Resolved | `specs/quick/auth-cart-ownership.md`; `apps/api/src/routes/authz-regressions.test.ts` | In-process boundary only; no production security claim |
-| Focused regression baseline | Observed | Resolved for configured scope | Latest recorded run: 4 files, 12 tests passing | No all-owned-source coverage or browser suite |
+| Focused regression baseline | Observed | Resolved for configured scope | Latest recorded run: 4 files, 15 tests passing | No all-owned-source coverage or browser suite |
 
 ## Open functional decisions and defects
 

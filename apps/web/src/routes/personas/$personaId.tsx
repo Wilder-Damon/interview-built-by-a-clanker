@@ -10,6 +10,43 @@ export const Route = createFileRoute("/personas/$personaId")({
   component: PersonaDetailPage,
 });
 
+interface FavoriteButtonProps {
+  isFavorited: boolean;
+  isPending: boolean;
+  onToggle: () => void;
+}
+
+function FavoriteButton({
+  isFavorited,
+  isPending,
+  onToggle,
+}: FavoriteButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      disabled={isPending}
+      aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
+      aria-pressed={isFavorited}
+      className="p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors disabled:opacity-50"
+    >
+      <svg
+        className={`w-6 h-6 ${isFavorited ? "text-red-500 fill-red-500" : "text-gray-400"}`}
+        fill={isFavorited ? "currentColor" : "none"}
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+        />
+      </svg>
+    </button>
+  );
+}
+
 function PersonaDetailPage() {
   const { personaId } = Route.useParams();
   const { user } = useAuth();
@@ -21,10 +58,8 @@ function PersonaDetailPage() {
 
   const { data: favorites = [] } = useQuery({
     queryKey: ["favorites", user?.id],
-    queryFn: async () => {
-      const res = await api.get<{ favorites: Persona[] }>("/favorites");
-      return res.favorites.map((p) => p.id);
-    },
+    queryFn: () => api.get<{ favorites: Persona[] }>("/favorites"),
+    select: (response) => response.favorites.map((favorite) => favorite.id),
     enabled: !!user,
   });
 
@@ -172,25 +207,11 @@ function PersonaDetailPage() {
                 >
                   {addToCart.isPending ? "Adding..." : "Add to Cart"}
                 </button>
-                <button
-                  onClick={() => toggleFavorite.mutate()}
-                  disabled={toggleFavorite.isPending}
-                  className="p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors disabled:opacity-50"
-                >
-                  <svg
-                    className={`w-6 h-6 ${isFavorited ? "text-red-500 fill-red-500" : "text-gray-400"}`}
-                    fill={isFavorited ? "currentColor" : "none"}
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                </button>
+                <FavoriteButton
+                  isFavorited={isFavorited}
+                  isPending={toggleFavorite.isPending}
+                  onToggle={() => toggleFavorite.mutate()}
+                />
               </div>
             )}
 

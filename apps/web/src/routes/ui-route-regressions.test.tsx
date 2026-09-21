@@ -1,13 +1,15 @@
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import type { Persona, User } from "@acme/shared";
 
 const state = vi.hoisted(() => ({
   search: {} as Record<string, unknown>,
   user: null as User | null,
+  favoritePersonas: [] as Persona[],
   queryOptions: [] as Array<Record<string, unknown>>,
   mutationOptions: [] as Array<Record<string, unknown>>,
+  get: vi.fn(),
   post: vi.fn(),
   remove: vi.fn(),
 }));
@@ -37,7 +39,14 @@ vi.mock("@tanstack/react-query", () => ({
       return { data: persona, isLoading: false };
     }
     if (key[0] === "favorites") {
-      return { data: [], isLoading: false };
+      const response = { favorites: state.favoritePersonas };
+      const select = options.select as
+        | ((value: typeof response) => unknown)
+        | undefined;
+      return {
+        data: select ? select(response) : response,
+        isLoading: false,
+      };
     }
     if (key[0] === "cart" || key[0] === "cart-count") {
       return { data: { items: [], total: 0 }, isLoading: false };
@@ -46,7 +55,12 @@ vi.mock("@tanstack/react-query", () => ({
   },
   useMutation: (options: Record<string, unknown>) => {
     state.mutationOptions.push(options);
-    return { mutate: vi.fn(), isPending: false, error: null };
+    return {
+      mutate: (...args: unknown[]) =>
+        (options.mutationFn as (...mutationArgs: unknown[]) => unknown)(...args),
+      isPending: false,
+      error: null,
+    };
   },
 }));
 
@@ -57,7 +71,7 @@ vi.mock("~/lib/auth", () => ({
 vi.mock("~/lib/api", () => ({
   api: {
     delete: state.remove,
-    get: vi.fn(),
+    get: state.get,
     post: state.post,
     put: vi.fn(),
   },
@@ -100,8 +114,10 @@ function renderRoute(route: { options: { component: () => ReactNode } }) {
 beforeEach(() => {
   state.search = {};
   state.user = { id: "user-1", username: "tester", email: "tester@example.com" };
+  state.favoritePersonas = [];
   state.queryOptions.length = 0;
   state.mutationOptions.length = 0;
+  state.get.mockResolvedValue({ favorites: [] });
 });
 
 afterEach(() => cleanup());
@@ -128,6 +144,53 @@ describe("route query and mutation contracts", () => {
       personaId: "p-test",
     });
     expect(state.remove).not.toHaveBeenCalled();
+  });
+
+  it("keeps one raw favorites cache shape and derives detail IDs with select", async () => {
+    const response = { favorites: [persona] };
+    state.get.mockResolvedValue(response);
+
+    renderRoute(PersonaRoute as never);
+    const detail = state.queryOptions.find(
+      (options) => (options.queryKey as unknown[])[0] === "favorites",
+    );
+
+    state.queryOptions.length = 0;
+    renderRoute(FavoritesRoute as never);
+    const list = state.queryOptions[0];
+
+    await expect(
+      (detail?.queryFn as () => Promise<unknown>)(),
+    ).resolves.toEqual(response);
+    expect(
+      (detail?.select as (value: typeof response) => string[])(response),
+    ).toEqual(["p-test"]);
+    await expect(
+      (list?.queryFn as () => Promise<unknown>)(),
+    ).resolves.toEqual(response);
+  });
+
+  it("activates an absent favorite through the rendered heart", () => {
+    renderRoute(PersonaRoute as never);
+
+    fireEvent.click(screen.getByRole("button", { name: "Add to favorites" }));
+
+    expect(state.post).toHaveBeenCalledWith("/favorites", {
+      personaId: "p-test",
+    });
+    expect(state.remove).not.toHaveBeenCalled();
+  });
+
+  it("removes a selected favorite through the rendered heart", () => {
+    state.favoritePersonas = [persona];
+    renderRoute(PersonaRoute as never);
+
+    const heart = screen.getByRole("button", { name: "Remove from favorites" });
+    expect(heart.getAttribute("aria-pressed")).toBe("true");
+    fireEvent.click(heart);
+
+    expect(state.remove).toHaveBeenCalledWith("/favorites/p-test");
+    expect(state.post).not.toHaveBeenCalled();
   });
 
   it("does not query favorites for an anonymous visitor", () => {
